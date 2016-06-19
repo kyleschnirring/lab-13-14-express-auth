@@ -22,7 +22,7 @@ request.use(superPromise);
 
 describe('testing module auth-router', function(){
   before((done) => {
-    debug('before module auth-roter');
+    debug('before module auth-router');
     if (! server.isRunning) {
       server.listen(port, () => {
         server.isRunning = true;
@@ -35,7 +35,7 @@ describe('testing module auth-router', function(){
   });
 
   after((done) => {
-    debug('after module auth-roter');
+    debug('after module auth-router');
     if (server.isRunning) {
       server.close(() => {
         server.isRunning = false;

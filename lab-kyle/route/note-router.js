@@ -7,7 +7,7 @@ const jsonParser = require('body-parser').json();
 
 // app modules
 const parseBearerAuth = require('../lib/parse-bearer-auth');
-const noteController = require('../controller/snack-controller');
+const noteController = require('../controller/note-controller');
 
 // module constants
 const noteRouter = module.exports = new Router();

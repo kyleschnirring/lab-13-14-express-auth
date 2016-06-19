@@ -5,7 +5,8 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const httpErrors = require('http-errors');
-const debug = require('debug')('authdemo:user');
+const debug = require('debug')('authKyle:user');
+const Promise = require('bluebird');
 
 const userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
@@ -45,7 +46,7 @@ userSchema.methods.generateFindHash = function(){
 
     function _generateFindHash(){
       this.findHash = crypto.randomBytes(32).toString('hex');
-      this.save()
+      this.saveAsync()
       .then( () => resolve(this.findHash))
       .catch(( err ) => {
         if (tries > 5) reject(err);

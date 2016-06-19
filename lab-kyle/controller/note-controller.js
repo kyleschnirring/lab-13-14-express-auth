@@ -37,11 +37,11 @@ exports.updateNote = function(id, data){
       return reject(err);
     }
 
-    Note.findOne({_id: id})
+    Note.findOneAsync({_id: id})
    .then(() => {
-     Note.update({_id: id}, data)
+     Note.updateAsync({_id: id}, data)
      .then(() => {
-       Note.findOne({_id: id})
+       Note.findOneAsync({_id: id})
        .then(resolve)
        .catch(reject);
      })

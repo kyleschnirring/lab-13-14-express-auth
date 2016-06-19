@@ -1,7 +1,7 @@
 'use strict';
 
 // npm modules
-const debug = require('debug')('authdemo:auth-controller');
+const debug = require('debug')('authKyle:auth-controller');
 
 // app modules
 const User = require('../model/user');

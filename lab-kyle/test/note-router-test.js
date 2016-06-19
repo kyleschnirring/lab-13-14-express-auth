@@ -11,7 +11,7 @@ const superPromise = require('superagent-promise-plugin');
 const debug = require('debug')('authkyle:note-router-test');
 
 // require app modules
-const snackController = require('../controller/note-controller');
+const noteController = require('../controller/note-controller');
 const authController = require('../controller/auth-controller');
 const userController = require('../controller/user-controller');
 
@@ -48,7 +48,7 @@ describe('testing module note-router', function(){
     done();
   });
 
-  describe('tesing module note router', function(){
+  describe('testing module note router', function(){
     beforeEach((done) => {
       authController.signup({username: 'KyleSchnirring', password:'pass123'})
       .then( token => this.tempToken = token)
@@ -59,13 +59,13 @@ describe('testing module note-router', function(){
     afterEach((done) => {
       Promise.all([
         userController.removeAllUsers()
-        , snackController.removeAllSnacks()
+        , noteController.removeAllNotes()
       ])
       .then( () => done())
       .catch(done);
     });
 
-    describe('tesing post /api/note', () => {
+    describe('testing post /api/note', () => {
       it('should return a note', (done) => {
         request.post(`${baseURL}/note`)
         .send({

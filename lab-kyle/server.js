@@ -6,6 +6,9 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const httpErrors = require('http-errors');
 const debug = require('debug')('authKyle:server');
+const Promise = require('bluebird');
+Promise.promisifyAll(mongoose);
+
 
 // app modules
 const handleError = require('./lib/handle-error');
@@ -19,6 +22,7 @@ const port = process.env.PORT || 3000;
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/authKyle';
 
 // setup mongo
+mongoose.Promise = Promise;
 mongoose.connect(mongoURI);
 
 // setup middleware
@@ -43,6 +47,7 @@ app.use(handleError);
 // start server
 const server = app.listen(port, function(){
   debug('server up #%BooyaKasha%###', port);
+  console.log('server up #%BooyaKasha%###', port);
 });
 
 server.isRunning = true;

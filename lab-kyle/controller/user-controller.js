@@ -1,8 +1,7 @@
 'use strict';
 
-const debug = require('debug')('authdemo:user-controller');
+const debug = require('debug')('authKyle:user-controller');
 const User = require('../model/user');
-
 
 exports.removeAllUsers = function(){
   debug('removeAllUsers');

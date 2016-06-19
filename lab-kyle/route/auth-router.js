@@ -2,7 +2,7 @@
 
 // npm modules
 const Router = require('express').Router;
-const debug = require('debug')('authdemo:auth-rotuer');
+const debug = require('debug')('authdemo:auth-routuer');
 const jsonParser = require('body-parser').json();
 const parseBasicAuth = require('../lib/parse-basic-auth');
 
