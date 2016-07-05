@@ -51,7 +51,7 @@ exports.updateNote = function(id, data){
   });
 };
 
-exports.removeOneUser = function(id){
+exports.removeOneNote = function(id){
   return new Promise ((resolve, reject) => {
     debug('delete one note');
     Note.findOne({_id: id})
