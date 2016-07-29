@@ -2,7 +2,7 @@
 
 // npm modules
 const Router = require('express').Router;
-const debug = require('debug')('authdemo:auth-routuer');
+const debug = require('debug')('authdemo:auth-rotuer');
 const jsonParser = require('body-parser').json();
 const parseBasicAuth = require('../lib/parse-basic-auth');
 
@@ -12,16 +12,16 @@ const authController = require('../controller/auth-controller');
 // module constants
 const authRouter = module.exports = new Router();
 
-authRouter.post('/signup', jsonParser, (req, res, next) => {
-  debug('posting signup', req.body);
+authRouter.post('/signup', jsonParser, function(req, res, next){
+  debug('authRouter post');
   authController.signup(req.body)
-  .then(token => res.send(token))
+  .then( token => res.send(token))
   .catch(next);
 });
 
-authRouter.get('/signin', jsonParser, parseBasicAuth, (req, res, next) => {
-  debug('signing in');
+authRouter.get('/signin', parseBasicAuth ,function(req, res, next){
+  debug('authRouter get');
   authController.signin(req.auth)
-  .then(token => res.send(token))
+  .then( token => res.send(token))
   .catch(next);
 });

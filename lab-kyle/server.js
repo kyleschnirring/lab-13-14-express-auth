@@ -5,24 +5,20 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const httpErrors = require('http-errors');
-const debug = require('debug')('authKyle:server');
-const Promise = require('bluebird');
-Promise.promisifyAll(mongoose);
-
+const debug = require('debug')('authdemo:server');
 
 // app modules
 const handleError = require('./lib/handle-error');
 const parserBearerAuth = require('./lib/parse-bearer-auth');
 const authRouter = require('./route/auth-router');
-const noteRouter = require('./route/note-router');
+const snackRouter = require('./route/snack-router');
 
 // constant module variables
 const app = express();
 const port = process.env.PORT || 3000;
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/authKyle';
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/authdemodev';
 
 // setup mongo
-mongoose.Promise = Promise;
 mongoose.connect(mongoURI);
 
 // setup middleware
@@ -35,7 +31,7 @@ app.all('/', parserBearerAuth, function(req, res){
 });
 
 app.use('/api', authRouter);
-app.use('/api', noteRouter);
+app.use('/api', snackRouter);
 
 app.all('*', function(req, res, next){
   debug('404 * route');
@@ -46,8 +42,7 @@ app.use(handleError);
 
 // start server
 const server = app.listen(port, function(){
-  debug('server up #%BooyaKasha%###', port);
-  console.log('server up #%BooyaKasha%###', port);
+  debug('server up #%booya%###', port); 
 });
 
 server.isRunning = true;

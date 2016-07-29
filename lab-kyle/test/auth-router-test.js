@@ -1,14 +1,14 @@
 'use strict';
 
 // set env vars
-process.env.APP_SECRET = process.env.APP_SECRET || 'passwordpassword123letmeinqwerty';
+process.env.APP_SECRET = process.env.APP_SECRET || 'slugs are secret hahhah';
 process.env.MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/test';
 
 // require npm modules
 const expect = require('chai').expect;
 const request = require('superagent-use');
 const superPromise = require('superagent-promise-plugin');
-const debug = require('debug')('authkyle:auth-router-test');
+const debug = require('debug')('authdemo:auth-router-test');
 
 // require app modules
 const authController = require('../controller/auth-controller');
@@ -20,13 +20,13 @@ const baseURL = `localhost:${port}/api`;
 const server = require('../server');
 request.use(superPromise);
 
-describe('testing module auth-router', () => {
+describe('testing module auth-router', function(){
   before((done) => {
-    debug('before module-auth');
-    if(!server.isRunning) {
+    debug('before module auth-roter');
+    if (! server.isRunning) {
       server.listen(port, () => {
         server.isRunning = true;
-        debug(`server is up ::: ${port}`);
+        debug(`server up ::: ${port}`);
         done();
       });
       return;
@@ -35,11 +35,11 @@ describe('testing module auth-router', () => {
   });
 
   after((done) => {
-    debug('after module auth-router');
+    debug('after module auth-roter');
     if (server.isRunning) {
       server.close(() => {
         server.isRunning = false;
-        debug('server is down');
+        debug('server down');
         done();
       });
       return;
@@ -47,23 +47,7 @@ describe('testing module auth-router', () => {
     done();
   });
 
-  it('should have a running server', (done) => {
-    expect(server.isRunning).to.equal(true);
-    done();
-  });
-
-  describe('a bad endpoint', () => {
-    it('should return a 404 error', (done) => {
-      debug('testing bad endpoing');
-      request.post(`${baseURL}/fakeOne`)
-      .catch((err) => {
-        expect(err.response.status).to.equal(404);
-        done();
-      });
-    });
-  });
-
-  describe('testing POST /api/signup', () => {
+  describe('testing POST /api/signup', function(){
     after((done) => {
       debug('after POST /api/signup');
       userController.removeAllUsers()
@@ -71,84 +55,48 @@ describe('testing module auth-router', () => {
       .catch(done);
     });
 
-    it ('should return a token', (done)=> {
+    it('should return a token', function(done){
       debug('test POST /api/signup');
       request.post(`${baseURL}/signup`)
       .send({
-        username: 'kle',
-        password: '4321'
+        username: 'slug',
+        password: 'slug123'
       })
       .then(res => {
         expect(res.status).to.equal(200);
+        expect(res.text.length).to.equal(205);
         done();
       })
       .catch(done);
     });
-
-    it('should return a 400 if no body', (done) =>{
-      debug('test POST /api/signup with no body');
-      request.post(`${baseURL}/signup`)
-      .catch(err => {
-        expect(err.response.status).to.equal(400);
-        done();
-      });
-    });
-
-    it('shoudl return a 400 if a bad request is sent', (done) => {
-      debug('test POST /api/signup with bad request');
-      request.post(`${baseURL}/signup`)
-      .send({
-        username: 'kyle'
-      })
-      .catch(err => {
-        expect(err.response.status).to.equal(400);
-        done();
-      });
-    });
   });
 
-  describe('testing GET /api/signin', () => {
+  describe('testing GET /api/signin', function(){
     before((done) => {
-      debug('before GET /api/signin');
-      authController.signup({username: 'kyle', password:'4321'})
+      debug('before GET /api/signup');
+      authController.signup({username: 'slug', password: '1234'})
       .then(() => done())
       .catch(done);
     });
 
     after((done) => {
-      debug('after GET /api/signin');
+      debug('after GET /api/signup');
       userController.removeAllUsers()
       .then(() => done())
       .catch(done);
     });
 
-    it('should return a token', (done) => {
-      debug('test GET /api/signin');
+    it('should return a token', function(done){
+      debug('test GET /api/signup');
       request.get(`${baseURL}/signin`)
-      .auth('kyle', '4321')
-      .then(res => {
+      .auth('slug', '1234')
+      .then( res => {
         expect(res.status).to.equal(200);
+        expect(res.text.length).to.equal(205);
         done();
       })
       .catch(done);
-    });
 
-    it('should return a 401 error user is not found', (done)=> {
-      request.get(`${baseURL}/signin`)
-      .auth('fake', 'user')
-      .catch(err => {
-        expect(err.response.status).to.equal(401);
-        done();
-      });
     });
-    it('should return a 401 error bad password is sent', (done)=> {
-      request.get(`${baseURL}/signin`)
-      .auth('kyle', 'fakeyFakey')
-      .catch(err => {
-        expect(err.response.status).to.equal(401);
-        done();
-      });
-    });
-
   });
 });
